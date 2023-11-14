@@ -22,10 +22,10 @@ void fsm_traffic_light(){
 		status = RED_GREEN;
 		//Set up LED
 		HAL_GPIO_WritePin(R1_GPIO_Port, R1_Pin, RESET);
-		HAL_GPIO_WritePin(Y1_GPIO_Port, Y1_Pin, SET);
+		HAL_GPIO_WritePin(A1_GPIO_Port, A1_Pin, SET);
 		HAL_GPIO_WritePin(G1_GPIO_Port, G1_Pin, SET);
 		HAL_GPIO_WritePin(R1_GPIO_Port, R1_Pin, SET);
-		HAL_GPIO_WritePin(Y2_GPIO_Port, Y2_Pin, SET);
+		HAL_GPIO_WritePin(A2_GPIO_Port, A2_Pin, SET);
 		HAL_GPIO_WritePin(G2_GPIO_Port, G2_Pin, RESET);
 
 		//Set up default value
@@ -45,7 +45,7 @@ void fsm_traffic_light(){
 	case RED_GREEN:
 		//Set up LED
 		HAL_GPIO_WritePin(R1_GPIO_Port, R1_Pin, RESET);
-		HAL_GPIO_WritePin(Y1_GPIO_Port, Y1_Pin, SET);
+		HAL_GPIO_WritePin(A1_GPIO_Port, A1_Pin, SET);
 		HAL_GPIO_WritePin(R2_GPIO_Port, R2_Pin, SET);
 		HAL_GPIO_WritePin(G2_GPIO_Port, G2_Pin, RESET);
 
@@ -72,7 +72,7 @@ void fsm_traffic_light(){
 	case RED_AMBER:
 		//Set up LED
 		HAL_GPIO_WritePin(G2_GPIO_Port, G2_Pin, SET);
-		HAL_GPIO_WritePin(Y2_GPIO_Port, Y2_Pin, RESET);
+		HAL_GPIO_WritePin(A2_GPIO_Port, A2_Pin, RESET);
 
 		if (timer_flag[0] == 1){
 			status = GREEN_RED;
@@ -98,7 +98,7 @@ void fsm_traffic_light(){
 		//Set up LED
 		HAL_GPIO_WritePin(R1_GPIO_Port, R1_Pin, SET);
 		HAL_GPIO_WritePin(G1_GPIO_Port, G1_Pin, RESET);
-		HAL_GPIO_WritePin(Y2_GPIO_Port, Y2_Pin, SET);
+		HAL_GPIO_WritePin(A2_GPIO_Port, A2_Pin, SET);
 		HAL_GPIO_WritePin(R2_GPIO_Port, R2_Pin, RESET);
 
 		if (timer_flag[0] == 1){
@@ -123,7 +123,7 @@ void fsm_traffic_light(){
 
 	case AMBER_RED:
 		//Set up LED
-		HAL_GPIO_WritePin(Y1_GPIO_Port, Y1_Pin, RESET);
+		HAL_GPIO_WritePin(A1_GPIO_Port, A1_Pin, RESET);
 		HAL_GPIO_WritePin(G1_GPIO_Port, G1_Pin, SET);
 
 		if (timer_flag[0] == 1){
@@ -151,10 +151,10 @@ void fsm_traffic_light(){
 		status = AUTO_RED;
 		//Set up RED LED
 		HAL_GPIO_WritePin(R1_GPIO_Port, R1_Pin, RESET);
-		HAL_GPIO_WritePin(Y1_GPIO_Port, Y1_Pin, SET);
+		HAL_GPIO_WritePin(A1_GPIO_Port, A1_Pin, SET);
 		HAL_GPIO_WritePin(G1_GPIO_Port, G1_Pin, SET);
 		HAL_GPIO_WritePin(R1_GPIO_Port, R1_Pin, RESET);
-		HAL_GPIO_WritePin(Y2_GPIO_Port, Y2_Pin, SET);
+		HAL_GPIO_WritePin(A2_GPIO_Port, A2_Pin, SET);
 		HAL_GPIO_WritePin(G2_GPIO_Port, G2_Pin, SET);
 
 		index_led = 0;
@@ -207,7 +207,7 @@ void fsm_traffic_light(){
 		}
 		if (isButtonPressed(2) == 1){
 			status = AUTO_RED;
-			GREEN = RED - AMBER;
+//			GREEN = RED - AMBER;
 		}
 		break;
 
@@ -217,10 +217,10 @@ void fsm_traffic_light(){
 		status = AUTO_AMBER;
 		//Set up AMBER LED
 		HAL_GPIO_WritePin(R1_GPIO_Port, R1_Pin, SET);
-		HAL_GPIO_WritePin(Y1_GPIO_Port, Y1_Pin, RESET);
+		HAL_GPIO_WritePin(A1_GPIO_Port, A1_Pin, RESET);
 		HAL_GPIO_WritePin(G1_GPIO_Port, G1_Pin, SET);
-		HAL_GPIO_WritePin(R1_GPIO_Port, R1_Pin, SET);
-		HAL_GPIO_WritePin(Y2_GPIO_Port, Y2_Pin, RESET);
+		HAL_GPIO_WritePin(R2_GPIO_Port, R2_Pin, SET);
+		HAL_GPIO_WritePin(A2_GPIO_Port, A2_Pin, RESET);
 		HAL_GPIO_WritePin(G2_GPIO_Port, G2_Pin, SET);
 
 		index_led = 0;
@@ -240,8 +240,8 @@ void fsm_traffic_light(){
 			setTimer(2, 250);
 		}
 		if (timer_flag[3] == 1){
-			HAL_GPIO_TogglePin(Y1_GPIO_Port, Y1_Pin);
-			HAL_GPIO_TogglePin(Y2_GPIO_Port, Y2_Pin);
+			HAL_GPIO_TogglePin(A1_GPIO_Port, A1_Pin);
+			HAL_GPIO_TogglePin(A2_GPIO_Port, A2_Pin);
 			setTimer(3, 250);
 		}
 		if (isButtonPressed(0) == 1){
@@ -249,7 +249,7 @@ void fsm_traffic_light(){
 		}
 		if (isButtonPressed(1) == 1){
 			status = INC_AMBER;
-			if (AMBER > 5) AMBER = 1;
+			if (AMBER >= 4) AMBER = 1;
 			else AMBER++;
 		}
 		break;
@@ -261,19 +261,19 @@ void fsm_traffic_light(){
 			setTimer(2, 250);
 		}
 		if (timer_flag[3] == 1){
-			HAL_GPIO_TogglePin(Y1_GPIO_Port, Y1_Pin);
-			HAL_GPIO_TogglePin(Y2_GPIO_Port, Y2_Pin);
+			HAL_GPIO_TogglePin(A1_GPIO_Port, A1_Pin);
+			HAL_GPIO_TogglePin(A2_GPIO_Port, A2_Pin);
 			setTimer(3, 250);
 		}
 		if (isButtonPressed(1) == 1){
 			status = INC_AMBER;
-			if (AMBER > 5) AMBER = 1;
+			if (AMBER >= 4) AMBER = 1;
 			else AMBER++;
 		}
 		if (isButtonPressed(2) == 1){
 			status = AUTO_AMBER;
-			if (RED < AMBER) RED = AMBER + 1;
-			GREEN = RED - AMBER;
+//			if (RED <= AMBER) RED = AMBER + 1;
+//			GREEN = RED - AMBER;
 		}
 		break;
 
@@ -282,10 +282,10 @@ void fsm_traffic_light(){
 		status = AUTO_GREEN;
 		//Set up GREEN LED
 		HAL_GPIO_WritePin(R1_GPIO_Port, R1_Pin, SET);
-		HAL_GPIO_WritePin(Y1_GPIO_Port, Y1_Pin, SET);
+		HAL_GPIO_WritePin(A1_GPIO_Port, A1_Pin, SET);
 		HAL_GPIO_WritePin(G1_GPIO_Port, G1_Pin, RESET);
-		HAL_GPIO_WritePin(R1_GPIO_Port, R1_Pin, SET);
-		HAL_GPIO_WritePin(Y2_GPIO_Port, Y2_Pin, SET);
+		HAL_GPIO_WritePin(R2_GPIO_Port, R2_Pin, SET);
+		HAL_GPIO_WritePin(A2_GPIO_Port, A2_Pin, SET);
 		HAL_GPIO_WritePin(G2_GPIO_Port, G2_Pin, RESET);
 
 		index_led = 0;
@@ -311,10 +311,12 @@ void fsm_traffic_light(){
 		}
 		if (isButtonPressed(0) == 1){
 			status = MODE1;
+			if (GREEN <= AMBER) GREEN = AMBER + 1;
+			RED = GREEN + AMBER;
 		}
 		if (isButtonPressed(1) == 1){
 			status = INC_GREEN;
-			if (GREEN > RED - AMBER) GREEN = RED - AMBER;
+			if (GREEN >= 99) GREEN = RED - AMBER;
 			else GREEN++;
 		}
 		break;
@@ -332,12 +334,12 @@ void fsm_traffic_light(){
 		}
 		if (isButtonPressed(1) == 1){
 			status = INC_GREEN;
-			if (GREEN > RED - AMBER) GREEN = RED - AMBER;
+			if (GREEN >= 99) GREEN = RED - AMBER;
 			else GREEN++;
 		}
 		if (isButtonPressed(2) == 1){
 			status = AUTO_GREEN;
-			RED = GREEN + AMBER;
+//			RED = GREEN + AMBER;
 		}
 		break;
 

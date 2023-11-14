@@ -10,7 +10,7 @@
 void display7SEG(int num){
   	char led7seg[10] = {0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
   	for (int i=0; i < 7; i++){
-  		HAL_GPIO_WritePin(GPIOB, Led_a_Pin<<i, (led7seg[num]>>i) & 1);
+  		HAL_GPIO_WritePin(GPIOB, SEG0_Pin<<i, (led7seg[num]>>i) & 1);
   	}
 }
 
